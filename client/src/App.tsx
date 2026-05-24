@@ -3,7 +3,6 @@ import Home from "./pages/home";
 import Login from "./pages/login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-import GlowCursor from "./effects/glowCursor";
 
 
 
@@ -14,7 +13,7 @@ function App() {
   return (
     
     <div className="main">
-      <GlowCursor />
+      
       <BrowserRouter>
 
       <Routes>

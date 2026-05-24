@@ -1,4 +1,4 @@
-import { div } from "framer-motion/client";
+
 import Navbar from "../componenets/Navbar";
 import PlaylistBox from "../componenets/playlistbox";
 import EmotionSlider from "../effects/Emotionslider";
@@ -10,7 +10,7 @@ export default function Home(){
         <div>
             <Navbar/>
             <motion.div 
-                className="main"
+                className="home"
                 initial={{ opacity:0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -25,6 +25,7 @@ export default function Home(){
                 <PlaylistBox/>
     
                 <div className="header">WITH AN ACTIVITY</div>
+                
     
                 <div className="header">AND A BOOK TO READ</div>
     

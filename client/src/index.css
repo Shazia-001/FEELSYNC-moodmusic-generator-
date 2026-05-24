@@ -89,7 +89,14 @@ body{
 }
 
 /*--------------------HERO PAGE-----------------------------*/
-
+.home{
+    min-height: 88vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 /*THE HEADERS*/
 .header{
     font-family: "Rajdhani", sans-serif;
@@ -145,6 +152,7 @@ body{
     filter: drop-shadow(0 0 0.3rem #00C2FF);
 }
 
+
 /*THE AUTOMATIC SCROLLING EFFECT*/
 .slider {
     margin-top: 3rem;
@@ -172,6 +180,19 @@ body{
     to {
       transform: translateX(-50%);
     }
+}
+
+@media (max-width : 700px) {
+    .emotion{
+        width: 7rem;
+        height: 7rem;
+    }
+    .slider:hover .slide-track {
+        animation-play-state: running;
+    }
+    
+    
+    
 }
 
 
@@ -286,7 +307,7 @@ body::before{
 
 /*--------------------------login page---------------------------*/
 
-.loginpage{
+.authpage{
     height: 88vh;
     width: 100vw;
     display: flex;
@@ -303,17 +324,15 @@ body::before{
     align-items: center;
     flex-direction: column;
     padding: 0.5rem;
-
+    font-family: "Rajdhani", sans-serif;
 }
 .headerlogin{
-    font-family: "Rajdhani", sans-serif;
     font-weight: 800;
     font-size: 3rem;
     text-align: center;
     color: #e0d0e4;
 }
 .authsubboxes{
-    font-family: "Rajdhani", sans-serif;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
@@ -321,14 +340,43 @@ body::before{
     width: 100%;
 }
 .authinput{
-    width: 60%;
+    width: 80%;
     height: 1.5rem;
     background: rgba(58, 80, 107, 0.1); 
     backdrop-filter: blur(12px);
     border: solid 1px rgba(224, 202, 229, 0.479);
     color: #e0cae5;
     padding: 0.5rem;
+    outline: none;
 }
+.authinput:focus{
+    box-shadow: 0 0 30px rgba(87, 70, 173, 0.615);  
+}
+.authinput:hover{
+    box-shadow: 0 0 30px rgba(87, 70, 173, 0.3);  
+}
+.authbtn{
+    width: 90%;
+    padding: 0.5rem;
+    border-radius: 0;
+    text-align: center;
+    border: solid 1px rgb(87, 70, 173);
+    background-color: #5746ada4;
+    color: #e0cae5;
+    transition: all 0.2s ease-in-out;
+}
+.authbtn:hover{
+    cursor: pointer;
+    border-color: #e0cae594;
+    box-shadow: 0 0 30px rgba(87, 70, 173, 0.3);
+    scale: 1.02;
+}
+.authbtn:active{
+    scale: 0.97;
+}
+
+
+
 
 
 

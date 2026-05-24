@@ -7,11 +7,11 @@ export default function Login () {
         <div>
             <Navbar/>
             <motion.div
-                className="loginpage"
+                className="authpage"
                 initial={{ opacity:0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut"}}
+                transition={{ duration: 0.5, ease: "easeOut"}}
             >
                 
                 <div className="loginbox">
@@ -28,7 +28,7 @@ export default function Login () {
                         <input type="password" placeholder="password" className="authinput"/>
                     </div>
 
-                    <button className="authbtn">Login</button>
+                    <button type="submit" className="authbtn">LOGIN</button>
                     <div className="authtext">Don't have an account?<Link to={"/signup"} > Sign Up </Link></div>
                 </div>
         

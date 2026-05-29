@@ -8,6 +8,9 @@ export default function Navbar() {
   const navigate = useNavigate(); 
 
     return (
+
+      
+
       <nav className="nav">
 
         <Link to="/" className="logo">

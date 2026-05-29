@@ -9,7 +9,7 @@ export default function Login () {
     const [password, setPassword] = useState("");
 
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) :  Promise<void> => {
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) :  Promise<void> => {
         e.preventDefault();
 
         const response = await fetch("http://localhost:3000/login", {
@@ -23,10 +23,28 @@ export default function Login () {
             }),
         });
 
-        const data: unknown = await response.json();
+
+
+        const data= await response.json();
+
+        localStorage.setItem("token", data.token);
+
+        console.log("Logged in user:", data.user);
+        console.log("Token:", data.token);
 
         console.log(data);
-    }
+
+        const token = localStorage.getItem("token");
+
+        const meRes = await fetch("http://localhost:3000/me", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        });
+
+        const meData = await meRes.json();
+        console.log("ME:", meData);
+    };
 
 
 
@@ -42,7 +60,7 @@ export default function Login () {
                 transition={{ duration: 0.5, ease: "easeOut"}}
             >
                 
-                <form className="loginbox" onSubmit={handleSubmit}>
+                <form className="loginbox" onSubmit={handleLogin}>
 
                     <div className="headerlogin">LOGIN</div>
 

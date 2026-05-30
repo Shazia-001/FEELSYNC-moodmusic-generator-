@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../componenets/Navbar";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 
 
 export default function Signup() {
@@ -9,6 +11,9 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const { setUser } = useAuth();
+    const navigate = useNavigate();
+    
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,8 +34,16 @@ export default function Signup() {
         })
 
         const data = await response.json();
-
         console.log(data);
+
+        localStorage.setItem("token", data.token);
+        setUser(data.user);
+
+        navigate("/dashboard");
+        
+        console.log("signup user: ", data.user)
+        console.log("signup token: ", data.token)
+
     }
 
 

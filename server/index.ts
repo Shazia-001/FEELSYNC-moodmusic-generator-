@@ -23,8 +23,9 @@ app.post("/signup", async (req, res) => {
         password : hashedPassword,
       },
     });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!);
 
-    res.json(user);
+    res.json({ user, token });
 
   } catch (error) {
     console.log(error);

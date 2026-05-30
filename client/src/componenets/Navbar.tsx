@@ -1,11 +1,21 @@
 import { AudioWaveform } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../context/useAuth";
 
 export default function Navbar() {
 
+  const { user, logout } = useAuth();
+  console.log("navbar user: ", user);
+
+  
+
   const navigate = useNavigate(); 
+
+  const handlelogout = () => {
+    logout();
+    navigate("/login");
+  }
 
     return (
 
@@ -22,8 +32,18 @@ export default function Navbar() {
         
 
         <div className="navlinks">
-          <button className="login" onClick={() => navigate("/login")}>LOG IN</button>
-          <button className="signup" onClick={() => navigate("/signup")}>SIGN UP</button>
+          {user ? (
+            <>
+
+              <span className="login">{user.name}</span>
+              <button className="signup" onClick={handlelogout}>logout</button>
+            </>
+          ) : (
+            <>
+              <button className="login" onClick={() => navigate("/login")}>LOG IN</button>
+              <button className="signup" onClick={() => navigate("/signup")}>SIGN UP</button>
+            </>
+          )}
         </div>
 
       </nav>

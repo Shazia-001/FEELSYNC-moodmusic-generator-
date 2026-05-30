@@ -2,11 +2,16 @@ import { motion } from "framer-motion"
 import Navbar from "../componenets/Navbar"
 import { Link } from "react-router-dom"
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login () {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { setUser } = useAuth();
+    const navigate = useNavigate();
 
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) :  Promise<void> => {
@@ -28,6 +33,9 @@ export default function Login () {
         const data= await response.json();
 
         localStorage.setItem("token", data.token);
+        setUser(data.user);
+        navigate("/dashboard")
+
 
         console.log("Logged in user:", data.user);
         console.log("Token:", data.token);
@@ -92,7 +100,7 @@ export default function Login () {
                     </div>
 
                     <button type="submit" className="authbtn">LOGIN</button>
-                    <div className="authtext">Don't have an account?<Link to={"/signup"} > Sign Up </Link></div>
+                    <div className="authtext">Don't have an account? <Link to={"/signup"}>Sign Up</Link></div>
                 </form>
         
             </motion.div>

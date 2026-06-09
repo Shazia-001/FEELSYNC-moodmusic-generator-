@@ -13,5 +13,17 @@ model User {
   email String @unique
   name  String?
   password String
+  playlists Playlist[]
 }
 
+model Playlist {
+  id          String @id @default(cuid())
+  name        String
+  mood        String
+  description String
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+
+  createdAt   DateTime @default(now())
+}

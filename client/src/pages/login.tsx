@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import Navbar from "../componenets/Navbar"
 import { Link } from "react-router-dom"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -12,35 +12,59 @@ export default function Login () {
     const [password, setPassword] = useState("");
     const { setUser } = useAuth();
     const navigate = useNavigate();
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+            if (!error) return;
+
+            const timer = setTimeout(() => {
+                setError("");
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }, [error]);
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) :  Promise<void> => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:3000/login", {
-            method : "POST",
-            headers: {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify({
-                email,
-                password,
-            }),
-        });
+        setLoading(true);
+        setError("");
 
 
+        try {
+            const response = await fetch("http://localhost:3000/login", {
+                method : "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
 
-        const data= await response.json();
-
-        localStorage.setItem("token", data.token);
-        setUser(data.user);
-        navigate("/dashboard")
+            const data= await response.json();
+            setError("");
 
 
-        console.log("Logged in user:", data.user);
-        console.log("Token:", data.token);
+            if (!response.ok){
+                setError(data.message);
+                return
+            }
 
-        console.log(data);
+            localStorage.setItem("token", data.token);
+            setUser(data.user);
+            navigate("/dashboard")
+        
+        } catch(err) {
+            setError("something went wrong");
+            
+            console.log(err)
+        }finally {
+            setLoading(false);
+        }
+
 
         const token = localStorage.getItem("token");
 
@@ -99,8 +123,14 @@ export default function Login () {
 
                     </div>
 
-                    <button type="submit" className="authbtn">LOGIN</button>
+                    {error && <div className="error-text">Invalid Password / Email</div>}
+                    
+                    <button type="submit" className="authbtn" disabled={loading}>{loading ? "loading..." : "LOGIN" } </button>
+
                     <div className="authtext">Don't have an account? <Link to={"/signup"}>Sign Up</Link></div>
+
+
+                     
                 </form>
         
             </motion.div>

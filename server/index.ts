@@ -4,6 +4,7 @@ import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { authMiddleware } from "./middleware/auth";
+import { Prisma } from "@prisma/client";
 
 const app = express();
 
@@ -27,11 +28,20 @@ app.post("/signup", async (req, res) => {
 
     res.json({ user, token });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
 
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if(error.code === "P2002") {
+        return res.status(400).json({
+          message: "email already in use",
+        });
+      }
+    }
+
+
     res.status(500).json({
-      message: error,
+      message: "something went wrong",
     });
   }
 
@@ -53,7 +63,7 @@ app.post("/login", async (req, res) => {
     })
 
     if (!user) {
-      return res.status(404).json({ message: "User ot found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
@@ -83,6 +93,56 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "login failed" })
   }
 });
+
+app.post("/generate-playlist", authMiddleware, async (req, res) =>{
+
+  const userId = (req as any).user.userId;
+
+  try {
+    const { mood } = req.body;
+    console.log("generate playlist request received with mood:", mood);
+
+    if (!mood) {
+      return res.status(400).json({
+        message: "mood is required",
+      });
+    }
+    console.log("recieved mood:", mood);
+
+    const playlist = {
+      name: `${mood} vibes`,
+      mood,
+      songs: [
+        "song 1 - chill artist",
+        "song 2 - moodmaker",
+        "song 3 - nightflow",
+        "song 4 - vibe curator",
+        "song 5 - mellow tunes",
+      ],
+      image: "https://placehold.co/300x300",
+      description: `a playlist to match your ${mood} mood`,
+    }
+
+    const savedPlaylist = await prisma.playlist.create({
+      data: {
+        name: playlist.name,
+        mood: playlist.mood,
+        description: playlist.description,
+        userId,
+      },
+    });
+
+    return res.json(savedPlaylist);
+
+  } catch (err) {
+    console.log("ERROR:", err);
+
+    return res.status(500).json({
+      message: "Something broke in playlist generation",
+    });
+  }
+
+})
 
 app.get("/me", authMiddleware, async (req, res) =>{
   const userId = (req as any).user.userId;

@@ -1,11 +1,13 @@
 import { Astroid, Heart, X } from "lucide-react";
 
-export default function PlaylistBox() {
+export default function PlaylistBox({ onClose }: { onClose: () => void }) {
+
+  
     return (
-        <div className="box">
+        <div className="box box1">
 
           <div className="box-header">
-            <div><X className="delete"/></div>
+            <div><X className="delete" onClick={onClose}/></div>
             <div className="playlistname">YOUR PLAYLIST</div>
             <div><Heart className="like"/></div>
           </div>

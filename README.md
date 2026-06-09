@@ -1,4 +1,4 @@
 # feelSync
 
-![app demo](./client/src/assets/vid.mp4)
+![app demo](./client/src/assets/vid.gif)
 
